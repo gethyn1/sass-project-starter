@@ -1,0 +1,117 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ base.forms
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+form {
+	width: 100%;
+}
+
+fieldset {
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+input[type="text"], input[type="email"], input[type="tel"],
+input[type="number"], input[type="date"], input[type="url"],
+input[type="password"], input[type="search"], textarea {
+
+	/* 
+
+	 NOTE:
+	 - - - - - -
+
+	 Uses height to help alignment with other elements
+	 Height can be set to false
+
+	*/
+	
+	@if map-get($inputs, height) { 
+		height: map-get($inputs, height);
+		padding: 0 map-get($inputs, padding);
+	} @else {
+		padding: map-get($inputs, padding);
+	}
+	background: map-get($inputs, background);
+	border: map-get($inputs, border);
+
+	/* Remove rounded corners in ios */
+	-webkit-appearance: none;
+    border-radius: map-get($inputs, border-radius);
+}
+
+input[type="radio"], input[type="checkbox"] {
+	vertical-align: middle;
+	margin-top: -4px;
+}
+
+textarea {
+	height: auto;
+	padding: map-get($inputs, padding);
+	resize: vertical;
+}
+
+button, input[type="submit"], input[type="reset"] {
+	@if map-get($buttons, height) { 
+		height: map-get($buttons, height);
+		padding: 0 map-get($buttons, padding);
+	} @else {
+		padding: map-get($buttons, padding);
+	}
+
+	/* Remove rounded corners in ios */
+	-webkit-appearance: none;
+	border: none;
+}
+
+.input-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+}
+input-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+	opacity: 1;
+}
+::-webkit-input-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+	opacity: 1;
+}
+:-moz-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+	opacity: 1;
+}
+::-moz-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+	opacity: 1;
+}
+:-ms-input-placeholder {
+	font-weight: map-get($placeholders, font-weight);
+	font-family: map-get($placeholders, font-family);
+	font-style: map-get($placeholders, font-style);
+	color: map-get($placeholders, color);
+	text-transform: map-get($placeholders, text-transform);
+	opacity: 1;
+}

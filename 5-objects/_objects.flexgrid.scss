@@ -1,0 +1,75 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ objects.flexgrid
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+
+/* 
+
+ Row alignment
+ - - - - - -
+
+*/
+
+.row-center { align-items: center; }
+.row-top { align-items: flex-start; }
+.row-bottom { align-items: flex-end; }
+.row-stretch { align-items: stretch; }
+
+
+/* 
+
+ Scaffold set of grid classes
+ - - - - - -
+ 
+*/
+
+@if map-get($flexgrid, scaffold-grid) {
+
+	/* 
+
+	 Generate grid classes
+	 - - - - - -
+
+	*/
+
+	@include flexgrid_scaffold_grid();
+	@include flexgrid_breakpoint_rows();
+
+
+	/* 
+
+	 Create classes for collapsing row spacing if scaffold spacing is set
+	 - - - - - -
+
+	*/
+
+	@if map-get($spacing, scaffold) {
+		@each $int in map-get($spacing, integers) {
+			@each $breakpoint_name, $breakpoint_value in $breakpoints {
+		
+				/* Only create breakpoint if value greater than 1 */
+				@if $breakpoint_value > 1 {	
+
+					@include breakpoint($breakpoint_name) {
+						/* Collapse grid rows at each integer */
+						.row-collapse-#{$breakpoint_name}-#{$int} {
+							margin-left: rem(-$int);
+							margin-right: rem(-$int);
+						}
+					}
+				}
+
+				@else {
+					.row-collapse-#{$breakpoint_name}-#{$int} {
+						margin-left: rem(-$int);
+						margin-right: rem(-$int);
+					}
+				}	
+			}
+		}
+	}
+}

@@ -1,0 +1,68 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ components.flexgrid
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+/* 
+
+ Grid overlay
+ - - - - - -
+
+*/
+
+.grid-overlay {
+	position: fixed;
+	display: none;
+	z-index: 100;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+
+	[class*="col"] {
+		height: 100vh;
+		background: rgba(red, 0.2);
+	}
+
+	&.is-visible {
+		display: block;
+	}
+}
+
+.grid-overlay-toggle {
+	display: block;
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 114;
+	padding: rem(5) rem(8);
+	color: #fff;
+	text-decoration: none;
+	background: #eee;
+	transition: all .1s ease;
+
+	&:hover {
+		background: #000;
+	}
+}
+
+
+/* 
+
+ Styles for testing columns
+ - - - - - -
+
+*/
+
+.test-col {
+	height: 100px;
+	background: #999;
+
+	&:nth-child(even) {
+		background: darken(#999, 10);
+	}
+}

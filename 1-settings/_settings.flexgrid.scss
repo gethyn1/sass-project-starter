@@ -1,0 +1,31 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ settings.flexgrid
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+
+/* 
+
+ NOTE:
+ - - - - - -
+
+ - `support-legacy` controls whether to add floats for IE9 as doesn't support flexbox.
+ 	Legacy support requires Modernizr to work.
+
+ - `col` controls standard columns with padding gutters.
+
+ - `alt-col` controls alt columns with margin gutters.
+ 
+*/
+
+$flexgrid: (
+	scaffold-grid: true,
+	col: true,
+	alt-col: true,
+	support-legacy: true,
+	column-count: 12,
+	gutter: 10px
+);

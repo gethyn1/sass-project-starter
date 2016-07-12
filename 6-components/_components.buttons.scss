@@ -1,0 +1,43 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ components.buttons
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+.button {
+	@include button();
+	border: none;
+
+	svg {
+		vertical-align: middle;
+	}
+
+	/* Give horizontal spacing to button components */
+	* + * {
+		margin-left: rem(12);
+	}
+}
+
+.button--primary {
+	background: $primary-color;
+	color: $black;
+	transition: all .1s ease;
+
+	&:hover {
+		background: saturate($primary-color, 10);
+		color: $black;
+	}
+}
+
+.button--small {
+	height: rem(40);
+	line-height: rem(42);
+}
+
+.button--full {
+	padding-left: 0;
+	padding-right: 0;
+	width: 100%;
+}

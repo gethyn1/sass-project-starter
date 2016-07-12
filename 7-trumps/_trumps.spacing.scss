@@ -1,0 +1,78 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ trumps.spacing
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+
+/* 
+
+ Create a standard spacing class
+ - - - - - -
+
+ This follows line-height from $base-type-sizes in settings.typography
+
+*/
+
+.vertical-space {
+	@include generate_breakpoint_vertical_rhythm();
+}
+
+.vertical-space--double {
+	@include generate_breakpoint_vertical_rhythm(2);
+}
+
+.vertical-space-children {
+	> * {
+		@include generate_breakpoint_vertical_rhythm();
+
+		&:last-child {
+			margin-bottom: 0 !important;
+		}
+	}
+}
+
+.vertical-space-children--sm {
+	> * {
+		@include generate_breakpoint_vertical_rhythm(0.5);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.vertical-space-children-none--l {
+	> * {
+		@include breakpoint('l') {
+			margin-bottom: 0 !important;
+		}
+	}
+}
+
+
+/* 
+
+ Create breakpoint spacing classes
+ - - - - - -
+
+*/
+
+@if map-get($spacing, scaffold) {
+	@each $breakpoint_name, $breakpoint_value in $breakpoints {
+		
+		/* Only create breakpoint if value greater than 1 */
+		@if $breakpoint_value > 1 {	
+
+			@include breakpoint($breakpoint_name) {
+				@include generate_spacing_classes(#{$breakpoint_name}-);
+			}
+		}
+
+		@else {
+			@include generate_spacing_classes();
+		}	
+	}
+}

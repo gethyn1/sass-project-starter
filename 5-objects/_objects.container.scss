@@ -1,0 +1,33 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ objects.container
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+.container {
+	margin: 0 auto;
+	max-width: $container-max-width;
+	width: calc(100vw - 80px);
+
+	@include breakpoint('l') {
+		width: calc(100vw - 160px);
+	}
+}
+
+.squeeze {
+	@include breakpoint('l') {
+		@include flex_grid_squeeze(1);
+	}
+}
+
+.band {
+	padding-top: rem(40);
+	padding-bottom: rem(40);
+
+	@include breakpoint('m') {
+		padding-top: rem(115);
+		padding-bottom: rem(115);
+	}
+}

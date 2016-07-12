@@ -1,0 +1,15 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ components.forms
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+.form-group {
+	input[type="text"], input[type="number"], input[type="tel"], select,
+	textarea {
+		display: block;
+		width: 100%;
+	}
+}

@@ -1,0 +1,79 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ trumps.visibility
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+/* Basic visibility classes */
+.hidden { display: none !important; }
+.visible { display: block; }
+.visible-f { display: flex; }
+.visible-t { display: table; }
+.visible-tr { display: table-row; }
+.visible-td { display: table-cell; }
+.visible-i { display: inline; }
+.visible-ib { display: inline-block; }
+
+/* Accesibility visibility classes */
+.hidden-v {
+	position: absolute;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+
+	[dir="ltr"] & {
+		left: -10000px;
+	}
+
+	[dir="rtl"] & {
+		right: -10000px;
+	}
+}
+
+/* Generate default breakpoint visibility classes */
+@each $breakpoint, $value in $breakpoints {
+	.visible-#{$breakpoint},
+	.visible-#{$breakpoint}-inline,
+	.visible-#{$breakpoint}-inline-block,
+	.visible-#{$breakpoint}-table,
+	.visible-#{$breakpoint}-table-row,
+	.visible-#{$breakpoint}-table-cell,
+	.visible-#{$breakpoint}-flex { display: none; }
+
+	@include breakpoint($breakpoint) {
+	  .visible-#{$breakpoint} { display: block; }
+	  .visible-#{$breakpoint}-i { display: inline; }
+	  .visible-#{$breakpoint}-ib { display: inline-block; }
+	  .visible-#{$breakpoint}-t { display: table; }
+	  .visible-#{$breakpoint}-tr { display: table-row; }
+	  .visible-#{$breakpoint}-tc { display: table-cell; }
+	  .visible-#{$breakpoint}-f { display: flex; }
+	}
+
+	table.visible-#{$breakpoint} {
+	  @include breakpoint($breakpoint) {
+	    display: table;
+	  }
+	}
+
+	tr.visible-#{$breakpoint} {
+	  @include breakpoint($breakpoint) {
+	    display: table-row;
+	  }
+	}
+
+	td.visible-#{$breakpoint} {
+	  @include breakpoint($breakpoint) {
+	    display: table-cell;
+	  }
+	}
+
+	.hidden-#{$breakpoint} {
+	  @include breakpoint($breakpoint) {
+	    display: none !important;
+	  }
+	}
+}

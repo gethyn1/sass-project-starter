@@ -1,0 +1,292 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ tools.flexgrid
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+
+$flexgrid_gutter 		: map-get($flexgrid, gutter); 
+$flexgrid_column_count 	: map-get($flexgrid, column-count);
+
+
+/* 
+
+ No flexbox fallback helper
+ - - - - - -
+
+ NOTE: requires Modernizr for class names
+ 
+*/
+
+@mixin no_flexbox() {
+	@if map-get($flexgrid, support-legacy) {
+		.no-flexbox & {
+			@content;
+		}
+	}
+}
+
+
+/* 
+
+ Generate css for rows and row utils for each breakpoint in sass map
+ - - - - - -
+ 
+*/
+
+/* Create gutters */
+@mixin flexgrid_gutter() {
+	padding-left: rem($flexgrid_gutter);
+	padding-right: rem($flexgrid_gutter);
+}
+
+/* Create gutters */
+@mixin flexgrid_alt_gutter() {
+	margin-left: rem($flexgrid_gutter);
+	margin-right: rem($flexgrid_gutter);
+}
+
+/* Remove external gutters from row */
+@mixin flexgrid_collapse_row_gutters($context_gutter: $flexgrid_gutter) {
+	margin-left: rem(-$context_gutter);
+	margin-right: rem(-$context_gutter);
+}
+
+/* Setup a flexbox row */
+@mixin flexgrid_row() {
+	display: flex;
+	flex-direction: row;
+  	flex-wrap: wrap;
+
+  	@include no_flexbox() {
+  		@include clearfix();
+  	}
+}
+
+/* Generate rows for set of breakpoints */
+@mixin flexgrid_breakpoint_rows($breakpoints: $breakpoints) {
+	@each $breakpoint_name, $breakpoint_value in $breakpoints {
+		@include breakpoint($breakpoint_name) {
+			
+			/* Create a breakpoint gutter class */
+			.gutter-#{$breakpoint_name} {
+				@include flexgrid_gutter();
+			}
+
+			/* Create breakpoint row class */
+			.row-#{$breakpoint_name} {
+				@include flexgrid_row();
+			}
+
+			/* Create breakpoint row collapse class */
+			.row-#{$breakpoint_name}--collapse {
+				@include flexgrid_collapse_row_gutters();
+			}
+
+			/* Create breakpoint col collapse class */
+			@if map-get($flexgrid, col) {
+				.col-#{$breakpoint_name}--collapse {
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+			}
+
+			/* Create breakpoint alt-col collapse class */
+			@if map-get($flexgrid, alt-col) {
+				.alt-col-#{$breakpoint_name}--collapse {
+					margin-left: 0 !important;
+					margin-right: 0 !important;
+				}
+
+				.alt-gutter-#{$breakpoint_name} {
+					margin-left: map-get($flexgrid, gutter) !important;
+					margin-right: map-get($flexgrid, gutter) !important;
+				}
+			}
+		}
+	}
+}
+
+
+/* 
+
+ Flexbox grid columns
+ - - - - - -
+ 
+*/
+
+/* Base styles for flexgrid column */
+@mixin flexgrid_col_setup($context_gutter: $flexgrid_gutter) {
+	position: relative;
+
+	/* Fixes images breaking container in FF Developer Edition */
+	min-width: 0;
+
+	/* Set margins */
+	padding-left: rem($context_gutter);
+	padding-right: rem($context_gutter);
+
+	@include no_flexbox() {
+  		float: left;
+  	}
+}
+
+@mixin flexgrid_alt_col_setup($context_gutter: $flexgrid_gutter) {
+
+	position: relative;
+
+	/* Fixes images breaking container in FF Developer Edition */
+	min-width: 0;
+
+	margin-left: rem($context_gutter);
+	margin-right: rem($context_gutter);
+
+	@include no_flexbox() {
+  		float: left;
+  	}
+}
+
+/* Create column span with padding gutters */
+@mixin flexgrid_col_span($span, $context_gutter: $flexgrid_gutter, $context_column_count: $flexgrid_column_count) {
+
+	/* Calculate col width from span */
+	$colWidth: (100% / $context_column_count * $span);
+
+	flex-basis: $colWidth;
+	
+	/* 
+	  Fixes IE width issues
+	  http://stackoverflow.com/questions/21942183/multiline-flexbox-in-ie11-calculating-widths-incorrectly
+	*/
+	max-width: $colWidth;
+
+	/* No flexbox fallback */
+	@include no_flexbox() {
+  		width: $colWidth;
+  	}
+}
+
+/* Create column span with margin gutters */
+@mixin flexgrid_alt_col_span($span, $context_gutter: $flexgrid_gutter, $context_column_count: $flexgrid_column_count) {
+
+	/* Calculate col width from span */
+	$colWidth: (100% / $context_column_count * $span);
+
+	/* Rem value */
+	$remValue: rem($context_gutter * 2);
+
+	flex-basis: calc(#{$colWidth} - #{$remValue});
+
+	/* 
+	  Fixes IE width issues
+	  http://stackoverflow.com/questions/21942183/multiline-flexbox-in-ie11-calculating-widths-incorrectly
+	*/
+	max-width: calc(#{$colWidth} - #{$remValue});
+
+	/* No flexbox fallback */
+	@include no_flexbox() {
+  		width: $colWidth;
+  	}
+}
+
+
+/* 
+
+ Shift elements along the grid 
+ - - - - - -
+
+ NOTE:
+
+ This needs some updating when working with rtl
+ 
+*/
+
+@mixin flexgrid_shift($count, $shift: 'push', $context_gutter: $flexgrid_gutter, $context_column_count: $flexgrid_column_count) {
+	
+	/* Calculate col width from span */
+	$colWidth: (100% / $context_column_count);
+
+	@if $shift == 'pull' {
+		right: ($colWidth * $count);
+	}
+	@else {
+		right: -($colWidth * $count);
+	}
+}
+
+
+/* 
+
+ Squeeze row by grid column width 
+ - - - - - -
+ 
+*/
+
+@mixin flex_grid_squeeze($count, $context_gutter: $flexgrid_gutter, $context_column_count: $flexgrid_column_count) {
+
+	/* Calculate col width from span */
+	$colWidth: (100% / $context_column_count);
+
+	padding-left:  ($colWidth * $count);
+	padding-right:  ($colWidth * $count);
+}
+
+
+/* 
+
+ Scaffold classes for flexgrid layouts
+ - - - - - -
+ 
+*/
+
+@mixin flexgrid_scaffold_grid($breakpoints: $breakpoints, $context_gutter: $flexgrid_gutter, $context_column_count: $flexgrid_column_count, $namespace: 'col') {
+
+	@each $breakpoint_name, $breakpoint_value in $breakpoints {
+		@include breakpoint($breakpoint_name) {
+
+			@if map-get($flexgrid, col) {
+				/* Setup css for columns each breakpoint */
+				[class*="#{$namespace}-#{$breakpoint_name}"] {
+					@include flexgrid_col_setup($context_gutter);
+				}
+			}
+
+			@if map-get($flexgrid, alt-col) {
+				/* Setup css for alt columns each breakpoint */
+				[class*="alt-#{$namespace}-#{$breakpoint_name}"] {
+					@include flexgrid_alt_col_setup($context_gutter);
+				}
+			}
+
+			@for $i from 1 through $context_column_count {
+
+				@if map-get($flexgrid, col) {
+					.#{$namespace}-#{$breakpoint_name}-#{$i}of#{$context_column_count}, %#{$namespace}-#{$breakpoint_name}-#{$i}of#{$context_column_count} {
+						@include flexgrid_col_span($i, $context_gutter, $context_column_count);
+					}
+				}
+
+				@if map-get($flexgrid, alt-col) {
+					.alt-#{$namespace}-#{$breakpoint_name}-#{$i}of#{$context_column_count}, %#{$namespace}-alt-#{$breakpoint_name}-#{$i}of#{$context_column_count} {
+						@include flexgrid_alt_col_span($i, $context_gutter, $context_column_count);
+					}
+				}
+
+				/* Grid shift */
+				.#{$namespace}-#{$breakpoint_name}-push#{$i}of#{$context_column_count} {
+					@include flexgrid_shift($i, 'push', $context_gutter, $context_column_count);
+				}
+
+				.#{$namespace}-#{$breakpoint_name}-pull#{$i}of#{$context_column_count} {
+					@include flexgrid_shift($i, 'pull', $context_gutter, $context_column_count);
+				}
+
+				.squeeze-#{$breakpoint_name}-#{$i}of#{$context_column_count} {
+					@include flex_grid_squeeze($i, $context_gutter, $context_column_count);
+				}
+			}		
+		}
+	}
+}

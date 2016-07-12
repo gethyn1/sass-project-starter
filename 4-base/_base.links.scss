@@ -1,0 +1,16 @@
+/*
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ base.forms
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+
+a {
+	color: $primary-color;
+	text-decoration: none;
+
+	&:hover {
+		color: saturate($primary-color, 14);
+	}
+}
